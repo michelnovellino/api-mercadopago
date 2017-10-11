@@ -10,8 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.18.1",
+    "body-parser": "^1.18.2",
     "express": "^4.15.4",
+    "fs": "0.0.1-security",
+    "jade": "^1.11.0",
+    "mercadopago": "^1.0.2",
     "request": "^2.82.0"
   },
   "devDependencies": {

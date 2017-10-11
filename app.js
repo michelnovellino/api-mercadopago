@@ -1,20 +1,28 @@
 var express = require("express");
 var app = express();
-var mercadopago = require ("mercadopago");
+var mercadopago = require("mercadopago");
+var config = require('./config');
+var fs = require('fs');
+var bodyParser = require('body-parser');
+
+// Add Body Parser Middleware
+
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
+app.use(bodyParser.json());
+
+// Mercado Pago
+
+var oldAccessToken = mercadopago.configurations.getAccessToken();
 
 mercadopago.configure({
-
-    access_token: 'TEST-1694852056934312-101013-ecc1bc4f5a45041496489cc5091ff3b8__LD_LC__-176562527',
-    sandbox:true
+  sandbox: true,
+  access_token: config.access_token
 });
 
-
-
-var at = mercadopago.getAccessToken ();
-
-app.get("/",function(req,res){
- mercadopago.payment.create({
- 
+var payment = {
   description: 'Buying a PS4',
   transaction_amount: 10500,
   payment_method_id: 'visa',
@@ -25,15 +33,20 @@ app.get("/",function(req,res){
       number: '34123123'
     }
   }
-}).then(function (mpResponse) {
-  console.log(mpResponse);
-}).catch(function (mpError) {
-  console.log(mpError);
+};
+
+app.get("/", function (req, res) {
+  mercadopago.configurations.setAccessToken(config.access_token);
+
+  mercadopago.payment.create(payment).then(function (data) {
+    res.send(JSON.stringify(data, null, 4));
+  }).catch(function (error) {
+    res.send(error);
+  }).finally(function () {
+    mercadopago.configurations.setAccessToken(oldAccessToken);
+  });
 });
 
- 
+// APP
 
-});
-
-
-app.listen(3000);
+app.listen(config.port);
