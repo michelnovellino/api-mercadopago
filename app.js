@@ -168,7 +168,7 @@ app.get("/payment-notification", function (req, res) {
 
 // Crear PreAprovacion 
 
-app.get("/payment-notification", function (req, res) {
+app.get("/preapproval-payment", function (req, res) {
   var preapprovalPayment = {
     payer_email: 'test_user_3931694@testuser.com',
     back_url: 'http://www.google.com',
