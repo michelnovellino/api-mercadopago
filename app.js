@@ -36,12 +36,22 @@ var payment = {
   transaction_amount: 10500,
 
   // Esto fue lo unico que cambie. 
-  payment_method_id: 'account_money',
-  payer: {
-    email: 'test_user_3931694@testuser.com',
-    identification: {
-      type: 'DNI',
-      number: '34123123'
+  payment_method_id: 'credit_card',
+  /*   payer: {
+      email: 'test_user_3931694@testuser.com',
+      identification: {
+        type: 'DNI',
+        number: '34123123'
+      }
+    }, */
+  card: {
+    id: 4444444444440008,
+    cardholder: {
+      name: 'Luis Torres',
+      identification: {
+        type: 'DNI',
+        number: '34123123'
+      }
     }
   }
 };
@@ -53,7 +63,7 @@ app.get("/create", function (req, res) {
 
   mercadopago.payment.create(payment).then(function (data) {
     console.log('true')
-    res.send(JSON.stringify(data, null, 4));
+    res.send(JSON.stringify(data.response, null, 4));
   }).catch(function (error) {
 
     console.log('false')
